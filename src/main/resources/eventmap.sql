@@ -5,7 +5,7 @@ create table "user"
             primary key,
     name    varchar   not null,
     surname varchar   not null,
-    mail    varchar   not null,
+    email   varchar   not null,
     hash    varchar   not null
 );
 
@@ -13,7 +13,7 @@ alter table "user"
     owner to postgres;
 
 create unique index user_mail_uindex
-    on "user" (mail);
+    on "user" (email);
 
 create table event
 (
@@ -44,5 +44,19 @@ create table visited_event
 );
 
 alter table visited_event
+    owner to postgres;
+
+create table token
+(
+    id      bigserial not null
+        constraint token_pk
+            primary key,
+    user_id bigint    not null
+        constraint token_user_id_fk
+            references "user",
+    token   varchar   not null
+);
+
+alter table token
     owner to postgres;
 
