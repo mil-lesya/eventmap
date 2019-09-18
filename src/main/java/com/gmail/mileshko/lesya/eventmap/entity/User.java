@@ -3,7 +3,7 @@ package com.gmail.mileshko.lesya.eventmap.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "user", schema = "public")
 public class User {
 
     @Id
@@ -17,8 +17,8 @@ public class User {
     @Column(name = "surname")
     private String surname;
 
-    @Column(name = "mail")
-    private String mail;
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "hash")
     private String hash;
@@ -26,10 +26,10 @@ public class User {
     public User() {
     }
 
-    public User(String name, String surname, String mail, String hash) {
+    public User(String name, String surname, String email, String hash) {
         this.name = name;
         this.surname = surname;
-        this.mail = mail;
+        this.email = email;
         this.hash = hash;
     }
 
@@ -57,12 +57,12 @@ public class User {
         this.surname = surname;
     }
 
-    public String getMail() {
-        return mail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getHash() {
