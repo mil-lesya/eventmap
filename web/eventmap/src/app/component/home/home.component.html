@@ -1,1 +1,24 @@
-<p>home works!</p>
+<div class="map-container">
+  <div class="map">
+    <agm-map
+      [latitude]="lat"
+      [longitude]="lng"
+      [zoom]="2"
+      (mapClick)="addMarker($event.coords.lat, $event.coords.lng)"
+    >
+      <agm-marker
+        *ngFor="let marker of markers"
+        [latitude]="marker.lat"
+        [longitude]="marker.lng"
+        [opacity]="marker.alpha"
+        [markerDraggable]="true"
+        (markerClick)="selectMarker($event)"
+      >
+      </agm-marker>
+
+    </agm-map>
+    <p *ngIf="selectedMarker">
+      Lat: {{ selectedMarker.lat }} Lng: {{ selectedMarker.lng }}
+    </p>
+  </div>
+</div>
