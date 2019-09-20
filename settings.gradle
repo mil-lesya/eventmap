@@ -1,1 +1,3 @@
 rootProject.name = 'eventmap'
+include 'core'
+include 'web'
