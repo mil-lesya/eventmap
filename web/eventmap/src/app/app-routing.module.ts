@@ -21,8 +21,7 @@ const routes: Routes = [
     component: HomeComponent,
   },
 
-
-];
+ ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

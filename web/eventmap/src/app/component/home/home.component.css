@@ -1,17 +1,16 @@
 agm-map {
-  width: 600px;
-  height: 400px;
+  width: 100%;
+  height:  calc(100vh - 50px);
 }
 
 .map {
-  max-width: 550px;
-  margin: 0 auto 100px;
-  padding: 45px;
+
+  margin: 0 auto;
+
   text-align: center;
 }
 
 .map-container {
   background: rgba(180, 133, 191, 0.3);
-  min-height: calc(100vh - 50px);
 
 }
