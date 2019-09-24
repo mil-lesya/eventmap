@@ -41,6 +41,12 @@ public class UserService {
         return tokenRepository.save(userToken).getToken();
     }
 
+    public User validate(String tokenValue) throws NoSuchEntityException {
+        return tokenRepository.findByToken(tokenValue)
+                .orElseThrow(() -> new NoSuchEntityException("no such token"))
+                .getUser();
+    }
+
     public void register(RegisterUserDto registerUserDto) throws RegistrationException {
         if (userRepository.findByEmail(registerUserDto.email).isPresent())
             throw new RegistrationException("user with such mail already exist");
