@@ -1,11 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute, Router} from '@angular/router';
 import {TokenProviderService} from '../../service/token.provider.service';
 import {ErrorService} from '../../service/error.service';
 import {UserService} from '../../service/user.service';
 import {User} from '../../dto/User';
 import {MarkService} from '../../service/mark.service';
-import {Mark} from '../../dto/Mark';
+import {Marker} from '../../dto/Marker';
+import {NewEvent} from '../../dto/NewEvent';
+import {SelectedMark} from '../../dto/SelectedMark';
+import {EventService} from '../../service/event.service';
 
 @Component({
   selector: 'app-home',
@@ -17,29 +19,32 @@ export class HomeComponent implements OnInit {
 
   lat = 43.879078;
   lng = -103.4615581;
-  selectedMarker;
+  selectedMarker: SelectedMark = new SelectedMark();
   markers = [];
   user: User;
-  mark: Mark = new Mark();
+  mark: Marker = new Marker();
   token: string;
+  newEvent: NewEvent = new NewEvent();
+  delete = false;
+  createEvent = false;
+  marker: Marker = new Marker();
 
   constructor(
     private tokenProviderService: TokenProviderService,
     private userService: UserService,
     private markService: MarkService,
+    private eventService: EventService,
     private errorService: ErrorService
   ) {
   }
 
   ngOnInit() {
-    this.tokenProviderService.token.subscribe(token => {
-      this.token = token;
-      this.userService.get(token).subscribe(user => {
-        this.user = user;
-        console.log('marks');
-        this.markService.getMarks(token).subscribe(markers => {
-          this.markers = markers;
-          console.log(markers);
+    this.markService.getMarkers().subscribe(markers => {
+      this.markers = markers;
+      this.tokenProviderService.token.subscribe(token => {
+        this.token = token;
+        this.userService.get(token).subscribe(user => {
+          this.user = user;
         });
       });
     });
@@ -47,23 +52,52 @@ export class HomeComponent implements OnInit {
 
 
   addMarker(lat: number, lng: number) {
+    if (!this.user) {
+      return;
+    }
+    console.log('add');
     this.markers.push({lat, lng, alpha: 0.4}
     );
     this.mark.latitude = lat;
     this.mark.longitude = lng;
     this.mark.user = this.user;
     this.markService.save(this.mark, this.token).subscribe(() => {
+      this.createEvent = true;
       console.log('save');
     });
   }
 
   selectMarker(event) {
-    this.selectedMarker = {
-      lat: event.latitude,
-      lng: event.longitude
-    };
+    console.log('select');
+    this.selectedMarker.latitude = event.latitude;
+    this.selectedMarker.longitude = event.longitude;
+    this.markService.getMarker(this.token, this.selectedMarker).subscribe(mark => {
+      console.log('get marker');
+      this.marker = mark;
+      console.log(this.marker.user.id);
+      console.log(this.user.id);
+      console.log(this.marker.user.id === this.user.id);
 
+    });
   }
+
+  createNewEvent() {
+    this.eventService.createEvent(this.newEvent).subscribe(() => {
+      console.log('create');
+      this.markService.getMarkers().subscribe(markers => {
+        this.markers = markers;
+      });
+    });
+  }
+
+  deleteMark() {
+    if (this.delete) {
+      this.markService.deleteMarker(this.token, this.marker).subscribe(() => {
+        console.log('delete');
+      });
+    }
+  }
+
 }
 
 

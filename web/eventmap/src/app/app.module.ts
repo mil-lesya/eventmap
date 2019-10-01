@@ -8,6 +8,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {RegisterComponent} from './component/register/register.component';
 import {HomeComponent} from './component/home/home.component';
+import {AgmCoreModule} from '@agm/core';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,9 @@ import {HomeComponent} from './component/home/home.component';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCYGZSczOpVDwWISOPT_jHX9PxZ5hDU7bo'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]

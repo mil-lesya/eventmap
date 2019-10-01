@@ -6,16 +6,30 @@
       [zoom]="4"
       (mapClick)="addMarker($event.coords.lat, $event.coords.lng)"
     >
-
       <agm-marker
         *ngFor="let marker of markers"
-        [latitude]="marker.latitude"
-        [longitude]="marker.longitude"
+        [latitude]="marker.lat" [longitude]="marker.lng"
         [opacity]="marker.alpha"
         [markerDraggable]="true"
         (markerClick)="selectMarker($event)"
       >
+        <agm-info-window *ngIf="createEvent">
+          <input type="text" placeholder="name" [(ngModel)]="newEvent.name" name="name">
+          <input type="text" placeholder="description" [(ngModel)]="newEvent.description" name="description">
+          <input type="date" placeholder="date" [(ngModel)]="newEvent.date" name="date">
+          <button (click)="createNewEvent()">create</button>
+          <button (click)="deleteMark()">delete</button>
+        </agm-info-window>
+        <agm-info-window *ngIf="!createEvent">
+          <div>{{newEvent.name}}</div>
+          <div>{{newEvent.description}}</div>
+          <div>{{newEvent.date}}</div>
+          <button (click)="deleteMark()">delete</button>
+        </agm-info-window>
+        <agm-marker *ngFor="let marker of markers" [latitude]="marker.latitude" [longitude]="marker.longitude">
+        </agm-marker>
       </agm-marker>
+
 
     </agm-map>
     <p *ngIf="selectedMarker">
