@@ -1,7 +1,9 @@
 package com.gmail.mileshko.lesya.eventmap.entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 
+// TODO: add fields
 @Entity
 @Table(name = "user", schema = "public")
 public class User {
@@ -23,14 +25,33 @@ public class User {
     @Column(name = "hash")
     private String hash;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(
+                    name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role_id", referencedColumnName = "id"))
+    private Collection<Role> roles;
+
     public User() {
     }
 
-    public User(String name, String surname, String email, String hash) {
+    public User(String name, String surname, String email, String hash, Collection<Role> roles) {
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.hash = hash;
+        this.roles = roles;
+    }
+
+
+    public Collection<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 
     public Long getId() {

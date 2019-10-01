@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "mark")
-public class Mark {
+public class Marker {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,10 +21,10 @@ public class Mark {
     @Column(name = "longitude")
     private Float longitude;
 
-    public Mark() {
+    public Marker() {
     }
 
-    public Mark(User user, Float latitude, Float longitude) {
+    public Marker(User user, Float latitude, Float longitude) {
         this.user = user;
         this.latitude = latitude;
         this.longitude = longitude;
