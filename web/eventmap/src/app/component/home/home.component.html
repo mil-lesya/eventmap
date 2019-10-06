@@ -20,20 +20,22 @@
           <button (click)="createNewEvent()">create</button>
           <button (click)="deleteMark()">delete</button>
         </agm-info-window>
-        <agm-info-window *ngIf="!createEvent">
-          <div>{{newEvent.name}}</div>
-          <div>{{newEvent.description}}</div>
-          <div>{{newEvent.date}}</div>
+
+        <agm-marker *ngFor="let marker of markers"
+                    [latitude]="marker.latitude"
+                    [longitude]="marker.longitude"
+                    (markerClick)="selectMarker($event)"
+        >
+          <agm-info-window *ngIf="!createEvent">
+          <div>{{existEvent.name}}</div>
+          <div>{{existEvent.description}}</div>
+          <div>{{existEvent.date}}</div>
           <button (click)="deleteMark()">delete</button>
         </agm-info-window>
-        <agm-marker *ngFor="let marker of markers" [latitude]="marker.latitude" [longitude]="marker.longitude">
         </agm-marker>
       </agm-marker>
 
 
     </agm-map>
-    <p *ngIf="selectedMarker">
-      Lat: {{ selectedMarker.lat }} Lng: {{ selectedMarker.lng }}
-    </p>
   </div>
 </div>

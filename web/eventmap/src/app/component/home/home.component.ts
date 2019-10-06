@@ -5,7 +5,7 @@ import {UserService} from '../../service/user.service';
 import {User} from '../../dto/User';
 import {MarkService} from '../../service/mark.service';
 import {Marker} from '../../dto/Marker';
-import {NewEvent} from '../../dto/NewEvent';
+import {Event} from '../../dto/Event';
 import {SelectedMark} from '../../dto/SelectedMark';
 import {EventService} from '../../service/event.service';
 
@@ -24,10 +24,11 @@ export class HomeComponent implements OnInit {
   user: User;
   mark: Marker = new Marker();
   token: string;
-  newEvent: NewEvent = new NewEvent();
+  newEvent: Event = new Event();
   delete = false;
   createEvent = false;
   marker: Marker = new Marker();
+  existEvent: Event = new Event();
 
   constructor(
     private tokenProviderService: TokenProviderService,
@@ -68,21 +69,24 @@ export class HomeComponent implements OnInit {
   }
 
   selectMarker(event) {
+
     console.log('select');
     this.selectedMarker.latitude = event.latitude;
     this.selectedMarker.longitude = event.longitude;
     this.markService.getMarker(this.token, this.selectedMarker).subscribe(mark => {
       console.log('get marker');
       this.marker = mark;
-      console.log(this.marker.user.id);
-      console.log(this.user.id);
-      console.log(this.marker.user.id === this.user.id);
-
+      this.eventService.getEvent(this.token, mark).subscribe(existEvent => {
+        this.existEvent = JSON.parse(existEvent.toString());
+        console.log(this.existEvent);
+      });
     });
   }
 
   createNewEvent() {
-    this.eventService.createEvent(this.newEvent).subscribe(() => {
+    this.createEvent = false;
+    this.newEvent.marker = this.marker;
+    this.eventService.createEvent(this.newEvent, this.token).subscribe(() => {
       console.log('create');
       this.markService.getMarkers().subscribe(markers => {
         this.markers = markers;

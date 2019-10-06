@@ -24,14 +24,27 @@ public class Event {
     @Column(name = "name")
     private String name;
 
+    @ManyToOne
+    @JoinColumn(name = "mark_id")
+    private Marker marker;
+
     public Event() {
     }
 
-    public Event(Timestamp date, String description, Integer price, String name) {
+    public Event(Timestamp date, String description, Integer price, String name, Marker marker) {
         this.date = date;
         this.description = description;
         this.price = price;
         this.name = name;
+        this.marker = marker;
+    }
+
+    public Marker getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Marker marker) {
+        this.marker = marker;
     }
 
     public Long getId() {

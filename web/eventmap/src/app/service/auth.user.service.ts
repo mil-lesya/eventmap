@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {AuthUser} from '../dto/AuthUser';
 import {API_URL} from '../../global';
 import {HttpClient} from '@angular/common/http';
@@ -16,6 +16,6 @@ export class AuthUserService {
   ) { }
 
   authenticate(authUser: AuthUser): Observable<string> {
-    return this.http.post<string>(API_URL + 'login', authUser, {responseType: 'text' as 'json'});
+    return this.http.post<string>(API_URL + 'auth', authUser, {responseType: 'text' as 'json'});
   }
 }

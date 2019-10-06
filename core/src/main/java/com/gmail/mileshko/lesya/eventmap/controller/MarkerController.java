@@ -38,8 +38,7 @@ public class MarkerController {
     }
 
     @PostMapping("get")
-    public MarkerDto getMark(@RequestBody SelectedMarkerDto selectedMarkerDto, @RequestHeader("token") String token) throws NoSuchEntityException {
-        User user = userService.validate(token);
+    public MarkerDto getMark(@RequestBody SelectedMarkerDto selectedMarkerDto) throws NoSuchEntityException {
         Marker marker = markerService.getMarker(selectedMarkerDto);
         return Mapper.map(marker, MarkerDto.class);
     }
