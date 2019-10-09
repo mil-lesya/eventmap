@@ -9,6 +9,10 @@ public class AuthUserDto {
     public AuthUserDto() {
     }
 
+    public AuthUserDto(String email) {
+        this.email = email;
+    }
+
     public AuthUserDto(String mail, String password) {
         this.email = mail;
         this.password = password;

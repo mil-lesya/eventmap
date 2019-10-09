@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import static com.gmail.mileshko.lesya.eventmap.security.SecurityConstants.HEADER_STRING;
+
 @RestController
 @RequestMapping("user")
 public class UserController {
@@ -23,8 +25,10 @@ public class UserController {
     }
 
     @GetMapping("get")
-    public UserDto get(@RequestHeader("token") String token) throws NoSuchEntityException {
-        User user = userService.validate(token);
+    public UserDto get(@RequestHeader(HEADER_STRING) String token) throws NoSuchEntityException {
+        User user = userService.getUser(token);
         return Mapper.map(user, UserDto.class);
     }
+
+
 }
