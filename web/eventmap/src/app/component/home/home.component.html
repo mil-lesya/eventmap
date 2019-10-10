@@ -1,8 +1,6 @@
 <div class="map-container">
   <div class="map">
     <agm-map
-      [latitude]="lat"
-      [longitude]="lng"
       [zoom]="4"
       (mapClick)="addMarker($event.coords.lat, $event.coords.lng)"
     >
@@ -26,16 +24,14 @@
                     [longitude]="marker.longitude"
                     (markerClick)="selectMarker($event)"
         >
-          <agm-info-window *ngIf="!createEvent">
-          <div>{{existEvent.name}}</div>
-          <div>{{existEvent.description}}</div>
-          <div>{{existEvent.date}}</div>
+          <agm-info-window *ngIf="marker.event != null">
+          <div>{{marker.event.name}}</div>
+          <div>{{marker.event.description}}</div>
+          <div>{{marker.event.date}}</div>
           <button (click)="deleteMark()">delete</button>
         </agm-info-window>
         </agm-marker>
       </agm-marker>
-
-
     </agm-map>
   </div>
 </div>

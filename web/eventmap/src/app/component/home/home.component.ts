@@ -6,7 +6,6 @@ import {User} from '../../dto/User';
 import {MarkService} from '../../service/mark.service';
 import {Marker} from '../../dto/Marker';
 import {Event} from '../../dto/Event';
-import {SelectedMark} from '../../dto/SelectedMark';
 import {EventService} from '../../service/event.service';
 
 @Component({
@@ -19,7 +18,7 @@ export class HomeComponent implements OnInit {
 
   lat = 43.879078;
   lng = -103.4615581;
-  selectedMarker: SelectedMark = new SelectedMark();
+  selectedMarker: Marker = new Marker();
   markers = [];
   user: User;
   mark: Marker = new Marker();
@@ -27,8 +26,7 @@ export class HomeComponent implements OnInit {
   newEvent: Event = new Event();
   delete = false;
   createEvent = false;
-  marker: Marker = new Marker();
-  existEvent: Event = new Event();
+  existEvent = [];
 
   constructor(
     private tokenProviderService: TokenProviderService,
@@ -57,51 +55,40 @@ export class HomeComponent implements OnInit {
       return;
     }
     console.log('add');
-    this.markers.push({lat, lng, alpha: 0.4}
-    );
+    this.markers.push({lat, lng, alpha: 0.4});
     this.mark.latitude = lat;
     this.mark.longitude = lng;
     this.mark.user = this.user;
-    this.markService.save(this.mark, this.token).subscribe(() => {
-      this.createEvent = true;
-      console.log('save');
-    });
+    this.createEvent = true;
   }
 
-  selectMarker(event) {
-
-    console.log('select');
-    this.selectedMarker.latitude = event.latitude;
-    this.selectedMarker.longitude = event.longitude;
-    this.markService.getMarker(this.token, this.selectedMarker).subscribe(mark => {
-      console.log('get marker');
-      this.marker = mark;
-      this.eventService.getEvent(this.token, mark).subscribe(existEvent => {
-        this.existEvent = JSON.parse(existEvent.toString());
-        console.log(this.existEvent);
-      });
-    });
-  }
 
   createNewEvent() {
     this.createEvent = false;
-    this.newEvent.marker = this.marker;
-    this.eventService.createEvent(this.newEvent, this.token).subscribe(() => {
+    this.eventService.createEvent(this.newEvent, this.token).subscribe(event => {
       console.log('create');
-      this.markService.getMarkers().subscribe(markers => {
-        this.markers = markers;
+      console.log(event);
+      this.mark.event = JSON.parse(event.toString());
+      this.markService.save(this.mark, this.token).subscribe(() => {
+        this.markService.getMarkers().subscribe(markers => {
+          this.markers = markers;
+        });
       });
     });
   }
 
   deleteMark() {
     if (this.delete) {
-      this.markService.deleteMarker(this.token, this.marker).subscribe(() => {
+      this.markService.deleteMarker(this.token, this.mark).subscribe(() => {
         console.log('delete');
       });
     }
   }
 
+  selectMarker(event) {
+    console.log('select');
+    this.selectedMarker.latitude = event.latitude;
+    this.selectedMarker.longitude = event.longitude;
+  }
 }
-
 

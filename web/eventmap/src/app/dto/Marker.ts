@@ -1,8 +1,9 @@
 import {User} from './User';
+import {Event} from './Event';
 
 export class Marker {
-  id: number;
   latitude: number;
   longitude: number;
   user: User;
+  event: Event;
 }
