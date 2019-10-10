@@ -1,12 +1,12 @@
 create table "user"
 (
-    id      bigserial not null
+    id       bigserial not null
         constraint user_pk
             primary key,
-    name    varchar   not null,
-    surname varchar   not null,
-    email   varchar   not null,
-    hash    varchar   not null
+    name     varchar   not null,
+    surname  varchar   not null,
+    email    varchar   not null,
+    password varchar   not null
 );
 
 alter table "user"
@@ -22,7 +22,6 @@ create table event
             primary key,
     date        timestamp not null,
     description text,
-    price       integer,
     name        varchar(20)
 );
 
@@ -46,17 +45,22 @@ create table visited_event
 alter table visited_event
     owner to postgres;
 
-create table token
+create table mark
 (
-    id      bigserial not null
-        constraint token_pk
+    id        bigint default nextval('mark_id_seq'::regclass) not null
+        constraint mark_pk
             primary key,
-    user_id bigint    not null
-        constraint token_user_id_fk
+    user_id   bigint                                          not null
+        constraint mark_user_id_fk
             references "user",
-    token   varchar   not null
+    latitude  double precision                                not null,
+    -- Only integer types can be auto increment
+    longitude double precision                                not null,
+    event_id  bigint
+        constraint mark_event_id_fk
+            references event
 );
 
-alter table token
+alter table mark
     owner to postgres;
 
