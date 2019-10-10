@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {AuthUser} from '../dto/AuthUser';
 import {API_URL} from '../../global';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
 
 
@@ -13,9 +13,10 @@ export class AuthUserService {
 
   constructor(
     private http: HttpClient
-  ) { }
+  ) {
+  }
 
-  authenticate(authUser: AuthUser): Observable<string> {
-    return this.http.post<string>(API_URL + 'auth', authUser, {responseType: 'text' as 'json'});
+  authenticate(authUser: AuthUser): Observable<HttpResponse<object>> {
+    return this.http.post<HttpResponse<object>>(API_URL + 'login', authUser, {observe: 'response'});
   }
 }

@@ -27,7 +27,8 @@ export class LoginComponent implements OnInit {
   }
 
   authenticate() {
-    this.authUserService.authenticate(this.authUser).subscribe(token => {
+    this.authUserService.authenticate(this.authUser).subscribe(resp => {
+        const token = resp.headers.get('Authorization');
         this.tokenProviderService.setToken(token);
         console.log(this.authUser);
         console.log('set token', token);
