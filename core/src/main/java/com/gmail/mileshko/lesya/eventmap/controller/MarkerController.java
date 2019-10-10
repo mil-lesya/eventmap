@@ -27,9 +27,9 @@ public class MarkerController {
     }
 
     @PostMapping("save")
-    public void saveMark(@RequestBody MarkerDto markerDto, @RequestHeader("token") String token) throws NoSuchEntityException {
-        User user = userService.validate(token);
-        markerService.saveMark(markerDto);
+    public MarkerDto saveMark(@RequestBody MarkerDto markerDto) throws NoSuchEntityException {
+        Marker marker = markerService.saveMark(markerDto);
+        return Mapper.map(marker, MarkerDto.class);
     }
 
     @GetMapping("get/all")
@@ -43,9 +43,5 @@ public class MarkerController {
         return Mapper.map(marker, MarkerDto.class);
     }
 
-    @PostMapping("delete")
-    public void deleteMark(@RequestBody MarkerDto markerDto, @RequestHeader("token") String token) throws NoSuchEntityException {
-        User user = userService.validate(token);
-        markerService.deleteMark(markerDto, user);
-    }
+
 }

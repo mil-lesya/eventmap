@@ -21,13 +21,26 @@ public class Marker {
     @Column(name = "longitude")
     private Float longitude;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "event_id")
+    private Event event;
+
     public Marker() {
     }
 
-    public Marker(User user, Float latitude, Float longitude) {
+    public Marker(User user, Float latitude, Float longitude, Event event) {
         this.user = user;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.event = event;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public Long getId() {

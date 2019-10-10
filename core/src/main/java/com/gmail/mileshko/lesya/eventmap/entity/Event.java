@@ -18,23 +18,18 @@ public class Event {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "price")
-    private Integer price;
-
     @Column(name = "name")
     private String name;
 
-    @ManyToOne
-    @JoinColumn(name = "mark_id")
+    @OneToOne(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
     private Marker marker;
 
     public Event() {
     }
 
-    public Event(Timestamp date, String description, Integer price, String name, Marker marker) {
+    public Event(Timestamp date, String description, String name, Marker marker) {
         this.date = date;
         this.description = description;
-        this.price = price;
         this.name = name;
         this.marker = marker;
     }
@@ -69,14 +64,6 @@ public class Event {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Integer getPrice() {
-        return price;
-    }
-
-    public void setPrice(Integer price) {
-        this.price = price;
     }
 
     public String getName() {

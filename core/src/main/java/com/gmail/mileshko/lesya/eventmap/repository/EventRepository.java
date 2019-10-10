@@ -9,5 +9,4 @@ import java.util.Optional;
 
 @Repository
 public interface EventRepository extends CrudRepository<Event, Long> {
-    Optional<Event> findByMarker(Marker marker);
 }
